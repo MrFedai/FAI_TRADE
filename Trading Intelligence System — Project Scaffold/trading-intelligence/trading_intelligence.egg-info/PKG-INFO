@@ -1,0 +1,137 @@
+Metadata-Version: 2.4
+Name: trading-intelligence
+Version: 0.1.0
+Summary: Personal Trading Intelligence System — AI-powered market intelligence for decision support
+Author: X
+License: Proprietary
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.115.0
+Requires-Dist: uvicorn[standard]>=0.34.0
+Requires-Dist: asyncpg>=0.30.0
+Requires-Dist: sqlalchemy[asyncio]>=2.0.36
+Requires-Dist: alembic>=1.14.0
+Requires-Dist: pgvector>=0.3.6
+Requires-Dist: redis[hiredis]>=5.2.0
+Requires-Dist: httpx>=0.28.0
+Requires-Dist: feedparser>=6.0.11
+Requires-Dist: beautifulsoup4>=4.12.3
+Requires-Dist: lxml>=5.3.0
+Requires-Dist: python-telegram-bot>=22.0
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: numpy>=2.1.3
+Requires-Dist: pandas-ta>=0.3.14b0
+Requires-Dist: pydantic>=2.10.0
+Requires-Dist: pydantic-settings>=2.7.0
+Requires-Dist: apscheduler>=3.11.0
+Requires-Dist: structlog>=24.4.0
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: python-dateutil>=2.9.0
+Requires-Dist: tenacity>=9.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.24.0; extra == "dev"
+Requires-Dist: pytest-cov>=6.0.0; extra == "dev"
+Requires-Dist: httpx>=0.28.0; extra == "dev"
+Requires-Dist: ruff>=0.8.0; extra == "dev"
+Requires-Dist: mypy>=1.13.0; extra == "dev"
+Provides-Extra: ai
+Requires-Dist: ollama>=0.4.0; extra == "ai"
+Requires-Dist: sentence-transformers>=3.3.0; extra == "ai"
+Requires-Dist: torch>=2.5.0; extra == "ai"
+Provides-Extra: backtest
+Requires-Dist: vectorbt>=0.26.0; extra == "backtest"
+
+# Personal Trading Intelligence System
+
+AI-powered market intelligence platform for personal trading decision support.
+
+**This is NOT an autonomous trading bot.** The system collects, filters, analyzes, and presents market information. All trading decisions remain with the user.
+
+## Architecture
+
+```
+USER → AI Agent → Development Machine → GitHub → CI/CD → Ubuntu Production Server
+                                                              ↓
+                                              Docker Services (PostgreSQL, Redis,
+                                              Backend, Telegram Bot, Workers)
+                                                              ↓
+                                                        Telegram → USER
+```
+
+## Hardware
+
+| Machine | Role | Hardware |
+|---------|------|----------|
+| Old Laptop | 24/7 Production Server | i7 7th Gen, 16GB RAM, 250GB |
+| New Laptop | AI/Dev Workstation | Ryzen 7 7840HS, RTX 4070 Laptop (8GB), 32GB RAM |
+
+## Quick Start
+
+### Prerequisites
+
+- Python 3.12+
+- Docker + Docker Compose
+- Git
+
+### Development Setup
+
+```bash
+# Clone
+git clone <repo-url>
+cd trading-intelligence
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+
+# Install
+pip install -e ".[dev]"
+
+# Copy environment config
+cp .env.example .env
+# Edit .env with your values
+
+# Run tests
+pytest
+
+# Start services (production)
+docker compose -f docker/docker-compose.yml up -d
+```
+
+## Project Structure
+
+```
+trading-intelligence/
+├── backend/          # FastAPI backend API
+├── telegram_bot/     # Telegram bot interface
+├── workers/          # Background data collectors
+│   ├── news/         # RSS + web news collection
+│   ├── market/       # Market price data (Binance, etc.)
+│   └── macro/        # Macroeconomic data (FRED, BEA, etc.)
+├── ai/               # AI layer
+│   ├── providers/    # LLM provider abstraction
+│   ├── rag/          # RAG pipeline
+│   ├── embeddings/   # Embedding generation
+│   └── intelligence/ # Market intelligence engine
+├── indicators/       # Technical analysis
+├── backtesting/      # Backtesting engine
+├── database/         # Schema + migrations
+├── tests/            # Unit + integration tests
+├── scripts/          # Setup + diagnostic scripts
+├── configs/          # YAML configuration
+├── docker/           # Dockerfiles + compose
+└── docs/            # Documentation
+```
+
+## Safety Boundaries
+
+- No broker/exchange trading API keys in the system
+- No automatic order execution
+- No automatic position opening/closing
+- All trade decisions are made by the user
+- Telegram output is decision support, not trade recommendations
+
+## License
+
+Proprietary — Personal use only.
