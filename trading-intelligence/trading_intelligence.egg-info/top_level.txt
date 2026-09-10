@@ -1,0 +1,7 @@
+ai
+backend
+backtesting
+database
+indicators
+telegram_bot
+workers
